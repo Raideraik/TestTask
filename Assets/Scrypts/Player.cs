@@ -14,15 +14,18 @@ public class Player : MonoBehaviour
     private int _pointIndex = 0;
     private Vector3 _deathPosition;
     private bool _victory;
+    private bool _started = false;
 
     public event UnityAction Died;
     public event UnityAction Victory;
     private void Start()
     {
         SetPlayer(_positions);
+        StartCoroutine(WaitToMove());
     }
     private void Update()
     {
+        if (_started)
         if (!_victory)
         {
             Move(_positions);
@@ -71,5 +74,11 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         _deathEffect.SetActive(false);
+    }
+
+    IEnumerator WaitToMove() 
+    {
+        yield return new WaitForSeconds(2);
+        _started = true;
     }
 }
